@@ -1,6 +1,5 @@
 from django.shortcuts import render
-from django.template import loader
-from data4good.trafficDisplay.trafficAccidents.caclulatePlots import myCoolFunc
+from trafficAccidents.calculatePlots import myCoolFunc
 
 def index(request):
     return render(request, "index.html")
