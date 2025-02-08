@@ -3,43 +3,52 @@
 {% block title %} Home {% endblock %}
 
 {% block content %}
+<h1>We automatically caclulate your score based on the weather in your location</h1>
+
 
 <div class="p-4 p-md-5 mb-5 mt-5 rounded text-body-emphasis bg-body-secondary text-center">
     <div class="px-0">
         <h3 class="display-4 fst-italic">Your Score</h3>
-        <h1>{{ score }} / 100</h1>
+        <h1>{{ overallScore }} / 100</h1>
         <p class="lead my-3">Our recommendation is: {{ recommendation }}</p>
         <p class="lead mb-0"><a href="/trafficDisplay/calculate" class="text-body-emphasis fw-bold">Calculate now</a></p>
     </div>
 </div>
 
-<div class="row justify-content-between">
-    <div class="col-md-3 p-4 p-md-5 mb-5 mt-3 me-2 rounded text-body-emphasis bg-body-secondary text-center">
-        <div class="px-0">
-            <h3 class="display-4 fst-italic">Your Score</h3>
-            <h1>{{ score }} / 100</h1>
-            <p class="lead my-3">Our recommendation is: {{ recommendation }}</p>
-            <p class="lead mb-0"><a href="/trafficDisplay/calculate" class="text-body-emphasis fw-bold">Calculate now</a></p>
+<h1>If you were to crash. Here are the likelihoods of different severities of crash</h1>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+    <div class="mb-5 mt-3">
+        <div class="p-4 p-md-5rounded text-body-emphasis bg-body-secondary text-center ">
+            <div class="px-0">
+                <h3 class="display-4 fst-italic">Slight</h3>
+                <h1>{{ slightScore }} / 100</h1>
+                <p class="lead my-3">Our recommendation is: {{ recommendation }}</p>
+                <p class="lead mb-0"><a href="/trafficDisplay/calculate" class="text-body-emphasis fw-bold">Calculate now</a></p>
+            </div>
         </div>
     </div>
 
-    <div class="col-md-3 p-4 p-md-5 mb-5 mt-3 me-2 rounded text-body-emphasis bg-body-secondary text-center ">
-        <div class="px-0">
-            <h3 class="display-4 fst-italic">Your Score</h3>
-            <h1>{{ score }} / 100</h1>
-            <p class="lead my-3">Our recommendation is: {{ recommendation }}</p>
-            <p class="lead mb-0"><a href="/trafficDisplay/calculate" class="text-body-emphasis fw-bold">Calculate now</a></p>
+    <div class="mb-5 mt-3">
+        <div class="p-4 p-md-5rounded text-body-emphasis bg-body-secondary text-center ">
+            <div class="px-0">
+                <h3 class="display-4 fst-italic">Serious</h3>
+                <h1>{{ seriousScore }} / 100</h1>
+                <p class="lead my-3">Our recommendation is: {{ recommendation }}</p>
+                <p class="lead mb-0"><a href="/trafficDisplay/calculate" class="text-body-emphasis fw-bold">Calculate now</a></p>
+            </div>
         </div>
     </div>
 
-    <div class="col-md-3 p-4 p-md-5 mb-5 mt-3  me-2 rounded text-body-emphasis bg-body-secondary text-center">
-        <div class="px-0">
-            <h3 class="display-4 fst-italic">Your Score</h3>
-            <h1>{{ score }} / 100</h1>
-            <p class="lead my-3">Our recommendation is: {{ recommendation }}</p>
-            <p class="lead mb-0"><a href="/trafficDisplay/calculate" class="text-body-emphasis fw-bold">Calculate now</a></p>
+        <div class="mb-5 mt-3">
+            <div class="p-4 p-md-5rounded text-body-emphasis bg-body-secondary text-center ">
+                <div class="px-0">
+                    <h3 class="display-4 fst-italic">Fatal</h3>
+                    <h1>{{ fatalScore }} / 100</h1>
+                    <p class="lead my-3">Our recommendation is: {{ recommendation }}</p>
+                    <p class="lead mb-0"><a href="/trafficDisplay/calculate" class="text-body-emphasis fw-bold">Calculate now</a></p>
+                </div>
+            </div>
         </div>
-    </div>
 </div>
 
 
