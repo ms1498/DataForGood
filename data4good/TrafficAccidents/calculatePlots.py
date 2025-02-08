@@ -9,29 +9,39 @@ import io
 import base64
 
 def myCoolFunc():
-
+    sns.set_theme(style="whitegrid", palette="flare")
     matplotlib.use('Agg')  # Use a non-interactive backend
 
     filtered_df = fil.filter_data()
+    file_path = "TrafficAccidents/traffic_accidents.csv"
+    df = pd.read_csv(file_path)
 
     # Plot 1: Injury Severity by Hour
     plt.figure(figsize=(10, 5))
-    sns.countplot(data=filtered_df, x='most_severe_injury', order=filtered_df['most_severe_injury'].value_counts().index)
-    plt.title("Injury Severity Distribution")
-    plt.xticks(rotation=45)
+    injury_columns = [
+        'injuries_total', 'injuries_fatal', 'injuries_incapacitating',
+        'injuries_non_incapacitating', 'injuries_reported_not_evident'
+    ]
+    df['hour_bin'] = (df['crash_hour'] // 3) * 3
+    injury_by_hour_bin = df.groupby('hour_bin')[injury_columns].sum().sum(axis=1)
+    plt.figure(figsize=(10, 6))
+    plt.pie(injury_by_hour_bin, labels=[f'{x}:00-{x+3}:00' for x in injury_by_hour_bin.index], autopct='%1.1f%%', startangle=140)
+    plt.title("Total Injuries Distribution by 3-Hour Interval")
 
     img = io.BytesIO()
     plt.savefig(img, format='png')
     plt.close()
     img.seek(0)
     plot1 = base64.b64encode(img.getvalue()).decode()
-    # plt.show()
 
     # Plot 2: Injury Severity by Road Type
     plt.figure(figsize=(10, 5))
-    sns.countplot(data=filtered_df, x='trafficway_type', hue='most_severe_injury')
-    plt.title("Injury Severity by Road Type")
-    plt.xticks(rotation=45)
+    ax = sns.countplot(data=filtered_df, x='most_severe_injury', order=filtered_df['most_severe_injury'].value_counts().index)
+    plt.title("Injury Severity Distribution", fontsize=14)
+    plt.xticks(rotation=30, ha='right', fontsize=12)  # Rotate slightly and align right
+    plt.xlabel("Most Severe Injury", fontsize=12)  # Label X-axis properly
+    plt.ylabel("Count", fontsize=12)
+    plt.tight_layout()  # Adjust layout to fit everything
    
     img = io.BytesIO()
     plt.savefig(img, format='png')
@@ -41,35 +51,46 @@ def myCoolFunc():
     # plt.show()
 
     # Plot 3: Crash Type Distribution
-    plt.figure(figsize=(10, 5))
-    sns.countplot(data=filtered_df, x='crash_type', order=filtered_df['crash_type'].value_counts().index)
-    plt.title("Crash Type Distribution")
-    plt.xticks(rotation=45)
+    injury_counts = filtered_df.groupby(['trafficway_type', 'most_severe_injury']).size().unstack().fillna(0)
+    injury_counts.plot(kind='bar', stacked=True, figsize=(10, 6))
+    plt.title("Injury Severity by Road Type (Stacked)")
+    plt.xlabel('Trafficway Type')
+    plt.ylabel('Count')
+    plt.xticks(rotation=45, ha='right')
+    plt.tight_layout()  
     
     img = io.BytesIO()
     plt.savefig(img, format='png')
     plt.close()
     img.seek(0)
     plot3 = base64.b64encode(img.getvalue()).decode()
-    # plt.show()
 
     # Plot 4: Severity of Injuries by Traffic Control Device
     plt.figure(figsize=(10, 5))
-    sns.countplot(data=filtered_df, x='traffic_control_device', hue='most_severe_injury')
-    plt.title("Severity of Injuries by Traffic Control Device")
-    plt.xticks(rotation=45)
+    device_counts = filtered_df['traffic_control_device'].value_counts()
+    min_threshold = 100  # Change this value if needed
+    valid_devices = device_counts[device_counts > min_threshold].index
+    filtered_data = filtered_df[filtered_df['traffic_control_device'].isin(valid_devices)]
+
+    # Plot the filtered data
+    sns.countplot(data=filtered_data, x='traffic_control_device', hue='most_severe_injury')
+    plt.title("Severity of Injuries by Traffic Control Device (Filtered)")
+    plt.xticks(rotation=45, ha="right")
+    plt.tight_layout()
     
     img = io.BytesIO()
     plt.savefig(img, format='png')
     plt.close()
     img.seek(0)
     plot4 = base64.b64encode(img.getvalue()).decode()
-    # plt.show()
 
     # Plot 5: Intersection-Related Accidents by Injury Type
     plt.figure(figsize=(10, 5))
-    sns.countplot(data=filtered_df, x='intersection_related_i', hue='most_severe_injury')
-    plt.title("Intersection-Related Accidents by Injury Type")
+    temp_df = df[~df['prim_contributory_cause'].isin(['NOT APPLICABLE', 'UNABLE TO DETERMINE'])]
+    top_10_causes = temp_df['prim_contributory_cause'].value_counts().index[:10]
+    sns.countplot(data=temp_df, y='prim_contributory_cause', order=top_10_causes)
+    plt.title("Primary Contributory Causes of Accidents")
+    plt.tight_layout()  
     
     img = io.BytesIO()
     plt.savefig(img, format='png')
@@ -80,8 +101,11 @@ def myCoolFunc():
 
     # Plot 8: Primary Contributory Causes of Accidents
     plt.figure(figsize=(10, 5))
-    sns.countplot(data=filtered_df, y='prim_contributory_cause', order=filtered_df['prim_contributory_cause'].value_counts().index[:10])
-    plt.title("Primary Contributory Causes of Accidents")
+    injury_columns = ['injuries_total', 'injuries_fatal', 'injuries_incapacitating', 'injuries_non_incapacitating', 'injuries_reported_not_evident']
+    filtered_df.groupby('lighting_condition')[injury_columns].sum().plot(kind='bar', stacked=True, figsize=(10, 5))
+    plt.title("Total Injuries by Lighting Condition")
+    plt.ylabel("Number of Injuries")
+    plt.tight_layout()  
     
     img = io.BytesIO()
     plt.savefig(img, format='png')
@@ -91,10 +115,14 @@ def myCoolFunc():
     # plt.show()
 
     # Plot 9: Extent of Damage Based on Road Defects
-    plt.figure(figsize=(10, 5))
-    sns.countplot(data=filtered_df, x='road_defect', hue='damage')
-    plt.title("Extent of Damage Based on Road Defects")
-    plt.xticks(rotation=45)
+    plt.figure(figsize=(10, 6))
+    sns.countplot(data=filtered_df, x='most_severe_injury')
+
+    plt.title(f"Injury Severity for CLEAR", fontsize=14)
+    plt.xticks(rotation=45, fontsize=12)
+    plt.xlabel("Most Severe Injury", fontsize=12)
+    plt.ylabel("Count of Accidents", fontsize=12)
+    plt.tight_layout()
     
     img = io.BytesIO()
     plt.savefig(img, format='png')
@@ -103,18 +131,6 @@ def myCoolFunc():
     plot7 = base64.b64encode(img.getvalue()).decode()
     # plt.show()
 
-    # Plot 10: Total Injuries by Lighting Condition
-    plt.figure(figsize=(10, 5))
-    injury_columns = ['injuries_total', 'injuries_fatal', 'injuries_incapacitating', 'injuries_non_incapacitating', 'injuries_reported_not_evident']
-    filtered_df.groupby('lighting_condition')[injury_columns].sum().plot(kind='bar', stacked=True, figsize=(10, 5))
-    plt.title("Total Injuries by Lighting Condition")
-    plt.ylabel("Number of Injuries")
-    img = io.BytesIO()
-    plt.savefig(img, format='png')
-    plt.close()
-    img.seek(0)
-    plot8 = base64.b64encode(img.getvalue()).decode()
-    # plt.show()
 
     context = {
         "plot1" : plot1,
@@ -123,8 +139,7 @@ def myCoolFunc():
         "plot4" : plot4,
         "plot5" : plot5,
         "plot6" : plot6,
-        "plot7" : plot7,
-        "plot8" : plot8,
+        "plot7" : plot7
                }
 
     return context
