@@ -2,7 +2,6 @@ import pandas as pd
 from mysoc_dataset import get_dataset_df
 import requests
 
-
 def get_location():
     response = requests.get('http://ipinfo.io')
     data = response.json()
@@ -22,10 +21,9 @@ def find_incidence(cenlat):
         file_name="parl_constituencies_2025.csv",
         done_survey=True
     )
-
     latitude_constituency = df_constituencies["center_lat"]
 
-    df_crashes = pd.read_excel('crash_data2023.xlsx')
+    df_crashes = pd.read_excel('data4good/incidence/crash_data2023.xlsx')
 
     dfnew = [abs(latitude_constituency.iloc[i] - cenlat) for i in range(len(df_constituencies))]
 
@@ -50,3 +48,5 @@ def find_incidence(cenlat):
 
 cenlat, cenlon = get_location()
 print(find_incidence(cenlat))
+
+
