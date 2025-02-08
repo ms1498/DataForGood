@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+
+<style>
+    #popup {
+      position: fixed;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 80%;
+      background: white;
+      display: none; /* Hidden initially */
+      z-index: 1000;
+    }
+  </style>
+
+
+<script>
+    function showPopup(card) {
+      const popup = document.getElementsByClassName('popup' + card);
+      popup[0].style.display = 'block';
+    }
+  
+    function exitPopup(card) {
+      const popup = document.getElementsByClassName('popup' + card);
+      popup[0].style.display = 'none';
+    }
+  </script>
+
+
+<h1>Explaning the Data</h1>
+<p>
+    Here you can find information from the dataset based on your location. These insights are directly realated to your location found by your IP address, so if you are using a VPN it won't work properly!
+</p>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+{% for plot_name, plot_image in plots.items %}
+        <div class="col">
+          <div class="card shadow-sm">
+            <img class="bd-placeholder-img card-img-top" width="100%" height="auto"  src="data:image/png;base64,{{ plot_image  }}" alt="ahh">
+            <div class="card-body">
+              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            </div>
+          </div>
+        </div>
+{% endfor %}
+</div>
+{% endblock %}
