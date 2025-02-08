@@ -105,9 +105,9 @@ def filter_data():
     #weather_condition = get_weather_category(weather_description)\
     weather_condition = "CLEAR"
 
-    file_path = "traffic_accidents.csv"
+    file_path = "TrafficAccidents/traffic_accidents.csv"
     df = pd.read_csv(file_path)
 
-    file_path = "traffic_accidents.csv"
+    file_path = "TrafficAccidents/traffic_accidents.csv"
     df = pd.read_csv(file_path)
     return df[(df['crash_hour'] >= current_time-1) & (df['crash_hour'] <= current_time+1) & (df['weather_condition'] == weather_condition)]
