@@ -1,0 +1,28 @@
+from django.db import models
+
+
+class TrafficData(models.Model):
+    crash_date = models.DateTimeField()
+    traffic_control_device = models.CharField()
+    weather_condition	= models.CharField()
+    lighting_condition	= models.CharField()
+    first_crash_type	= models.CharField()
+    trafficway_type	= models.CharField()
+    alignment	= models.CharField()
+    roadway_surface_cond	= models.CharField()
+    road_defect	= models.CharField()
+    crash_type	= models.CharField()
+    intersection_related_i	= models.CharField()
+    damage	= models.CharField()
+    prim_contributory_cause	= models.CharField()
+    num_units	= models.IntegerField()
+    most_severe_injury	= models.CharField()
+    injuries_total	= models.IntegerField()
+    injuries_fatal	= models.IntegerField()
+    injuries_incapacitating	= models.IntegerField()
+    injuries_non_incapacitating	= models.IntegerField()
+    injuries_reported_not_evident	= models.IntegerField()
+    injuries_no_indicatio = models.IntegerField()
+    crash_hour	= models.IntegerField()
+    crash_day_of_week	= models.IntegerField()
+    crash_month = models.IntegerField()
