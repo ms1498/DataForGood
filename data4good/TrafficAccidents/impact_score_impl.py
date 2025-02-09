@@ -1,9 +1,36 @@
 import pandas as pd
 from mysoc_dataset import get_dataset_df
+import filterData as filt
 
-weather_condition = 'Snowing'
-hour = 13
-latitude = 51.340907
+def get_weather_category(weather_description):
+    categories = {
+        'CLEAR': ["clear sky"],
+        'RAIN': ["light rain", "moderate rain", "heavy intensity rain", "very heavy rain", 
+                 "extreme rain", "freezing rain"],
+        'SNOW': ["light snow", "snow", "heavy snow"],
+        'CLOUDY/OVERCAST': ["few clouds", "scattered clouds", "broken clouds", "overcast clouds"],
+        'UNKNOWN': [ "dust", "sand"],
+        'FOG/SMOKE/HAZE': ["mist", "smoke", "haze", "fog", "sand"],
+        'BLOWING SNOW': ["sleet"],
+        'FREEZING RAIN/DRIZZLE': ["freezing rain"],
+        'OTHER': ["volcanic ash", "squalls", "tornado"],
+        'SLEET/HAIL': ["sleet"],
+        'SEVERE CROSS WIND GATE': ["windy",  "thunderstorm", "light thunderstorm", "heavy thunderstorm", "ragged thunderstorm" ],
+        'BLOWING SAND, SOIL, DIRT': ["dust", "sand"]
+    }
+    
+    # Iterate through the dictionary and find the category
+    for category, descriptions in categories.items():
+        if weather_description.lower() in [desc.lower() for desc in descriptions]:
+            return category
+    
+    return "Category not found"  # Return this if no category matches
+
+weather_description = filt.get_weather()
+hour = filt.get_time()
+latitude = filt.get_location()[0]
+weather_condition = get_weather_category(weather_description)
+
 
 def find_incidence(cenlat):
     df_constituencies = get_dataset_df(
