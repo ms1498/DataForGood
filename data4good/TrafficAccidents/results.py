@@ -1,5 +1,4 @@
 import pandas as pd
-import requests
 from mysoc_dataset import get_dataset_df
 
 def find_incidence(cenlat):
@@ -25,23 +24,23 @@ def fetch_data():
     selected_data = []
 
     while True:
-        data_type = input("Enter the data type (weather, road_surface, location, latlong): ").strip().lower()
+        data_type = input("Enter the data type (weather, road_surface, time, location, latlong): ").strip().lower()
 
         file_paths = {
-            'weather': ['data/normalised_proportions_weather_conditions.csv', 'data/normalised_proportions_combined_weather_conditions.csv'],
+            'weather': 'data/normalised_proportions_weather_conditions.csv',
             'road_surface': 'data/normalised_proportions_road_surface_conditions.csv',
             'location': 'data/normalised_proportions_of_accidents_by_constituency.csv',
             'lookup': 'data/LSOA_(2021)_to_future_Parliamentary_Constituencies_Lookup_in_England_and_Wales.csv',
-            'accidents': 'data/new_traffic_accidents.csv'
+            'accidents': 'data/new_traffic_accidents.csv',
+            'time': 'data/normalised_proportions_by_hour.csv'
         }
 
         if data_type not in file_paths and data_type != 'latlong':
-            print("Invalid data type. Please enter 'weather', 'road_surface', 'location', or 'latlong'.")
+            print("Invalid data type. Please enter 'weather', 'road_surface', 'location', 'latlong', or 'time'.")
             continue
 
         if data_type == 'weather':
-            df_weather = pd.read_csv(file_paths[data_type][0])
-            df_combined_weather = pd.read_csv(file_paths[data_type][1])
+            df_weather = pd.read_csv(file_paths[data_type])
         elif data_type != 'latlong':
             df = pd.read_csv(file_paths[data_type])
 
@@ -80,10 +79,7 @@ def fetch_data():
                         continue
 
                     selected_condition = weather_conditions[condition_number]
-                    if condition_number <= 7:
-                        condition_data = df_weather[df_weather.iloc[:, 0] == selected_condition]
-                    else:
-                        condition_data = df_combined_weather[df_combined_weather.iloc[:, 0] == selected_condition]
+                    condition_data = df_weather[df_weather['weather_condition'] == selected_condition]
                     selected_data.append((selected_condition, condition_data[['Slight_Proportion', 'Serious_Proportion', 'Fatal_Proportion']]))
                 except ValueError:
                     print("Invalid input. Please enter a number, 'done', or 'back'.")
@@ -163,6 +159,34 @@ def fetch_data():
             constituency_data = df_accidents[df_accidents['PCON25NM'] == constituency]
             selected_data.append((constituency, constituency_data[['Slight_Proportion', 'Serious_Proportion', 'Fatal_Proportion']]))
 
+        elif data_type == 'time':
+            df_time = pd.read_csv(file_paths['time'])
+            print("\nAvailable hours:")
+            for hour in df_time['hour'].unique():
+                print(f"{hour}:00")
+
+            while True:
+                user_input = input("\nEnter the hour (0-23) (or type 'done' to finish, 'back' to reselect data type): ").strip()
+
+                if user_input.lower() == 'done':
+                    break
+                elif user_input.lower() == 'back':
+                    break
+
+                try:
+                    hour = int(user_input)
+                    if hour < 0 or hour > 23:
+                        print("Invalid hour.")
+                        continue
+
+                    condition_data = df_time[df_time['hour'] == hour]
+                    selected_data.append((f"{hour}:00", condition_data[['Slight_Proportion', 'Serious_Proportion', 'Fatal_Proportion']]))
+                except ValueError:
+                    print("Invalid input. Please enter a number, 'done', or 'back'.")
+
+            if user_input.lower() == 'back':
+                continue
+
         if user_input.lower() == 'done':
             break
 
@@ -174,7 +198,8 @@ def fetch_data():
             print(data.to_string(index=False))
             combined_data = pd.concat([combined_data, data], ignore_index=True)
 
-        combined_proportions = combined_data.prod()
+        # Filter out zero values before calculating the product
+        combined_proportions = combined_data[combined_data != 0].prod()
         print("\nCombined proportion values:")
         print(combined_proportions.to_string())
 
