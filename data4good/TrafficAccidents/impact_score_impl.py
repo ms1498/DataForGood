@@ -25,15 +25,6 @@ def get_weather_category(weather_description):
     
     return "Category not found"  # Return this if no category matches
 
-latitude, longitude = filt.get_location()
-latitude = float(latitude)
-longitude = float(longitude)
-hour = int(filt.get_time(latitude,longitude))
-#api_key = "ad36e519250ce7c8dc131ebe1c0d561d"
-#weather_description = filt.get_weather(latitude, longitude, api_key)
-weather_description = "windy"
-weather_condition = get_weather_category(weather_description)
-weather_condition = 'Fine + high winds'
 
 
 def find_incidence(cenlat, cenlon):
@@ -72,11 +63,20 @@ def find_incidence(cenlat, cenlon):
 
     return percentage_diff
 
-def fetch_data(weather_condition, hour, latitude):
+def fetch_data():
+    latitude, longitude = filt.get_location()
+    latitude = float(latitude)
+    longitude = float(longitude)
+    hour = int(filt.get_time(latitude,longitude))
+    #api_key = "ad36e519250ce7c8dc131ebe1c0d561d"
+    #weather_description = filt.get_weather(latitude, longitude, api_key)
+    weather_description = "windy"
+    weather_condition = get_weather_category(weather_description)
+    weather_condition = 'Fine + high winds'
     file_paths = {
-        'weather': 'TrafficAccidents/data/normalised_proportions_weather_conditions.csv',
-        'location': 'TrafficAccidents/data/normalised_proportions_of_accidents_by_constituency.csv',
-        'time': 'TrafficAccidents/data/normalised_proportions_by_hour.csv'
+        'weather': 'data/normalised_proportions_weather_conditions.csv',
+        'location': 'data/normalised_proportions_of_accidents_by_constituency.csv',
+        'time': 'data/normalised_proportions_by_hour.csv'
     }
 
     # Load weather data
@@ -109,5 +109,3 @@ def fetch_data(weather_condition, hour, latitude):
     # print(combined_proportions.to_string())
     print(combined_proportions[6])
     return [combined_proportions[5], combined_proportions[6], combined_proportions[7]]
-
-fetch_data(weather_condition, hour, latitude)

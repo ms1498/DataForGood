@@ -17,26 +17,20 @@ def calculateRiskPage(request):
 
     # Get James's Number
     cenlat, cenlon = get_location()
-    likelihoodScore = find_incidence(cenlat, cenlon)
-    # likelihoodScore = 53.41
 
+    likelihoodScore = (find_incidence(cenlat, cenlon) + 50 )/ 2
 
-    weather_condition = 'Snowing'
-    hour = 13
-    latitude = 51.340907
 
     # Get David's numbers
-    davidScores = fetch_data(weather_condition, hour, latitude)
+    davidScores = fetch_data()
     
     if(likelihoodScore > 0):
-        overallScore = max(davidScores[1], davidScores[2]) * likelihoodScore *2
-    else:
-        overallScore = max(davidScores[1], davidScores[2]) * likelihoodScore *1
+        overallScore =( max(davidScores[1], davidScores[2]) * likelihoodScore) *1.5
     #Baseline is one
     # Do something to make this more pretty
-    davidScores[0] = (1 - davidScores[0]) *-100 
-    davidScores[1] = (1 - davidScores[1]) *-100
-    davidScores[2] = (1 - davidScores[2]) *-100
+    davidScores[0] = (1 - davidScores[0]) *-10
+    davidScores[1] = (1 - davidScores[1]) *-10
+    davidScores[2] = (1 - davidScores[2]) *-10
     
     # currently thinking displayed as '2x more likely' and '1x less likely'
 
