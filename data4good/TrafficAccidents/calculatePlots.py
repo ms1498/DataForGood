@@ -15,6 +15,10 @@ def getPlots():
     filtered_df = fil.filter_data()
     file_path = "TrafficAccidents/traffic_accidents.csv"
     df = pd.read_csv(file_path)
+    lat,long = fil.get_location()
+    #api_key = "ad36e519250ce7c8dc131ebe1c0d561d"
+    #weather = fil.get_weather_category( fil.get_weather(lat, long, api_key) )
+    weather = "clear"
 
     # Plot 1: Injury Severity by Hour
     plt.figure(figsize=(10, 5))
@@ -26,7 +30,7 @@ def getPlots():
     injury_by_hour_bin = df.groupby('hour_bin')[injury_columns].sum().sum(axis=1)
     plt.figure(figsize=(10, 6))
     plt.pie(injury_by_hour_bin, labels=[f'{x}:00-{x+3}:00' for x in injury_by_hour_bin.index], autopct='%1.1f%%', startangle=140)
-    plt.title("Total Injuries Distribution by 3-Hour Interval")
+    plt.title('Total Injuries Distribution by 3-Hour Interval')
 
     img = io.BytesIO()
     plt.savefig(img, format='png')
@@ -37,7 +41,7 @@ def getPlots():
     # Plot 3: Crash Type Distribution
     injury_counts = filtered_df.groupby(['trafficway_type', 'most_severe_injury']).size().unstack().fillna(0)
     injury_counts.plot(kind='bar', stacked=True, figsize=(10, 6))
-    plt.title("Injury Severity by Road Type (Stacked)")
+    plt.title(f"Injury Severity by Road Type (Stacked) during {weather} weather.")
     plt.xlabel('Trafficway Type')
     plt.ylabel('Count')
     plt.xticks(rotation=45, ha='right')
@@ -58,7 +62,7 @@ def getPlots():
 
     # Plot the filtered data
     sns.countplot(data=filtered_data, x='traffic_control_device', hue='most_severe_injury')
-    plt.title("Severity of Injuries by Traffic Control Device (Filtered)")
+    plt.title(f"Severity of Injuries by Traffic Control Device (Filtered) during {weather} weather.")
     plt.xticks(rotation=45, ha="right")
     plt.tight_layout()
     
