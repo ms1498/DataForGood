@@ -1,7 +1,8 @@
 import pandas as pd
 from mysoc_dataset import get_dataset_df
+import numpy as np
 
-def find_incidence(cenlat):
+def find_incidence(cenlat, cenlon):
     df_constituencies = get_dataset_df(
         repo_name="2025-constituencies",
         package_name="parliament_con_2025",
@@ -10,10 +11,13 @@ def find_incidence(cenlat):
         done_survey=True
     )
     latitude_constituency = df_constituencies["center_lat"]
+    longitude_constituency = df_constituencies["center_lon"]
 
     dfnew = [abs(latitude_constituency.iloc[i] - cenlat) for i in range(len(df_constituencies))]
+    dfnew2 = [abs(longitude_constituency.iloc[i] - cenlon) for i in range(len(df_constituencies))]
+    dfnew3 = [np.sqrt(dfnew[i] ** 2 + dfnew2[i] ** 2) for i in range(len(df_constituencies))]
 
-    ind = dfnew.index(min(dfnew))
+    ind = dfnew3.index(min(dfnew3))
 
     dftest = df_constituencies.iloc[ind]
     found_location = dftest["name"]
@@ -22,6 +26,7 @@ def find_incidence(cenlat):
 
 def fetch_data():
     selected_data = []
+    user_input = ''  # Initialize user_input before the loop
 
     while True:
         data_type = input("Enter the data type (weather, road_surface, time, location, latlong): ").strip().lower()
@@ -149,7 +154,8 @@ def fetch_data():
 
         elif data_type == 'latlong':
             latitude = float(input("Enter latitude: ").strip())
-            constituency = find_incidence(latitude)
+            longitude = float(input("Enter longitude: ").strip())
+            constituency = find_incidence(latitude, longitude)
             print(f"\nConstituency: {constituency}")
 
             # Load accidents data

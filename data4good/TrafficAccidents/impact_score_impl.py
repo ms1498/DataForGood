@@ -74,9 +74,9 @@ def fetch_data():
     weather_condition = get_weather_category(weather_description)
     weather_condition = 'Fine + high winds'
     file_paths = {
-        'weather': 'TrafficAccidents/data/normalised_proportions_weather_conditions.csv',
-        'location': 'TrafficAccidents/data/normalised_proportions_of_accidents_by_constituency.csv',
-        'time': 'TrafficAccidents/data/normalised_proportions_by_hour.csv'
+        'weather': 'data/normalised_proportions_weather_conditions.csv',
+        'location': 'data/normalised_proportions_of_accidents_by_constituency.csv',
+        'time': 'data/normalised_proportions_by_hour.csv'
     }
 
     # Load weather data
