@@ -81,9 +81,7 @@ def get_weather(lat, lon, api_key):
                 
                 # Return the weather information
                 weather_info = {
-                    "weather": weather,
-                    "temperature": temp,
-                    "humidity": humidity
+                    "weather": weather
                 }
                 return weather
             else:
