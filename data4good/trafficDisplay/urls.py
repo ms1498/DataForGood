@@ -6,4 +6,5 @@ urlpatterns = [
     path("", views.index, name="index"),
     path("showStats", views.showStats, name="showStats"),
     path("calculate", views.calculateRiskPage, name="calculateRiskPage"),
+    path("calculationExplain", views.calculationExplain, name="calculationExplain"),
 ]
