@@ -31,4 +31,5 @@ Store this in TrafficAccidents.filterData on line 100.
    ```sh
    cd data4good
 2. Start the Django development server:
+   ```sh
     python manage.py runserver
