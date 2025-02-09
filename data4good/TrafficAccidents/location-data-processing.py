@@ -32,24 +32,24 @@ constituency_severity['Slight_Proportion'] = constituency_severity['Slight'] / c
 constituency_severity['Serious_Proportion'] = constituency_severity['Serious'] / constituency_severity['Total']
 constituency_severity['Fatal_Proportion'] = constituency_severity['Fatal'] / constituency_severity['Total']
 
-# Normalize the proportions against global averages
+# Normalise the proportions against global averages
 constituency_severity['Slight_Proportion'] = constituency_severity['Slight_Proportion'] / global_severity.get('3', 1)
 constituency_severity['Serious_Proportion'] = constituency_severity['Serious_Proportion'] / global_severity.get('2', 1)
 constituency_severity['Fatal_Proportion'] = constituency_severity['Fatal_Proportion'] / global_severity.get('1', 1)
 
 # Select and rename the required columns
 constituency_severity = constituency_severity.rename(columns={
-    'Slight_Proportion': 'Normalized_Slight_Proportion',
-    'Serious_Proportion': 'Normalized_Serious_Proportion',
-    'Fatal_Proportion': 'Normalized_Fatal_Proportion'
+    'Slight_Proportion': 'Normalised_Slight_Proportion',
+    'Serious_Proportion': 'Normalised_Serious_Proportion',
+    'Fatal_Proportion': 'Normalised_Fatal_Proportion'
 })
 
 # Select and rename the required columns
-constituency_severity = constituency_severity[['PCON25NM', 'Fatal', 'Serious', 'Slight', 'Total', 'Normalized_Slight_Proportion', 'Normalized_Serious_Proportion', 'Normalized_Fatal_Proportion']]
+constituency_severity = constituency_severity[['PCON25NM', 'Fatal', 'Serious', 'Slight', 'Total', 'Normalised_Slight_Proportion', 'Normalised_Serious_Proportion', 'Normalised_Fatal_Proportion']]
 constituency_severity = constituency_severity.rename(columns={
-    'Normalized_Slight_Proportion': 'Slight_Proportion',
-    'Normalized_Serious_Proportion': 'Serious_Proportion',
-    'Normalized_Fatal_Proportion': 'Fatal_Proportion'
+    'Normalised_Slight_Proportion': 'Slight_Proportion',
+    'Normalised_Serious_Proportion': 'Serious_Proportion',
+    'Normalised_Fatal_Proportion': 'Fatal_Proportion'
 })
 
 # Save the combined data to a CSV file

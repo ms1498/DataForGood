@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import os
 
 # Adjust pandas display options
 pd.set_option('display.max_rows', None)
@@ -271,3 +272,24 @@ axes[2].tick_params(axis='x', rotation=45)
 
 plt.tight_layout()
 plt.show()
+
+# Load the datasets
+df_weather = pd.read_csv('data/normalised_proportions_weather_conditions.csv')
+df_combined_weather = pd.read_csv('data/normalised_proportions_combined_weather_conditions.csv')
+
+# Rename the column in df_combined_weather to match df_weather
+df_combined_weather = df_combined_weather.rename(columns={'combined_weather_condition': 'weather_condition'})
+
+# Concatenate the datasets
+df_combined = pd.concat([df_weather, df_combined_weather], ignore_index=True)
+
+# Remove duplicate rows based on the 'weather_condition' column
+df_combined = df_combined.drop_duplicates(subset='weather_condition')
+
+# Save the combined dataset
+df_combined.to_csv('data/normalised_proportions_weather_conditions.csv', index=False)
+
+# Delete the old combined dataset
+os.remove('data/normalised_proportions_combined_weather_conditions.csv')
+
+print("Combined dataset saved to 'normalised_proportions_weather_conditions.csv'")
