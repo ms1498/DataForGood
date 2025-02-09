@@ -17,16 +17,21 @@ def calculateRiskPage(request):
     elif(overallScore<70 and overallScore>=30): shouldDrive = "You may be at a higher risk by driving so be careful."
     else: shouldDrive = "You are safe to drive."
 
-
+    # Get James's Number
     cenlat, cenlon = get_location()
     likelihoodScore = find_incidence(cenlat, cenlon)
 
+    # Get David's numbers
+    davidScores = getDavid()
+
+    # Calculate overall
+    overall = davidScores[0] *  davidScores[1] * davidScores[2] * likelihoodScore
 
     context = {
-        "overallScore" : 57,
-        "slightScore" : 21,
-        "seriousScore" : 92,
-        "fatalScore" : 82,
+        "overallScore" : overall,
+        "slightScore" : davidScores[0],
+        "seriousScore" : davidScores[1],
+        "fatalScore" : davidScores[2],
         "likelihoodScore" : likelihoodScore,
         "recommendation" : f"{shouldDrive} Most people make mistakes by {top_10_causes}."
     }
@@ -39,13 +44,5 @@ def showStats(request):
     }
     return render(request, "explainingDataset.html", context)
 
-
-
-# context = {
-#     "plots" : {
-#         "plot1" : plot1
-#         "plot2" : plot1
-#         "plot3" : plot1
-#         "plot4" : plot1
-#     }
-# }
+def calculationExplain(request):
+    return render(request, "calcExplain.html")
