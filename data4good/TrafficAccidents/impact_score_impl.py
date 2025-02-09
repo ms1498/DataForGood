@@ -107,5 +107,6 @@ def fetch_data():
     # print(combined_data.to_string(index=False))
     # print("\nCombined Proportion Values, the:")
     # print(combined_proportions.to_string())
-    print(combined_proportions[6])
+    print(combined_proportions[7])
+    combined_proportions[7] = combined_proportions[7] -0.7
     return [combined_proportions[5], combined_proportions[6], combined_proportions[7]]
