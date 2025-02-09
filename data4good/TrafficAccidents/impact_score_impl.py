@@ -24,9 +24,10 @@ def get_weather_category(weather_description):
     
     return "Category not found"  # Return this if no category matches
 
-weather_description = filt.get_weather()
 hour = filt.get_time()
-latitude = filt.get_location()[0]
+latitude, longitude = filt.get_location()
+api_key = "ad36e519250ce7c8dc131ebe1c0d561d"
+weather_description = filt.get_weather(latitude, longitude, api_key)
 weather_condition = get_weather_category(weather_description)
 
 
