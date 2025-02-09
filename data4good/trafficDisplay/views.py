@@ -7,7 +7,11 @@ def index(request):
 
 def calculateRiskPage(request):
     context = {
-        "score" : 78,
+        "overallScore" : 57,
+        "slightScore" : 21,
+        "seriousScore" : 92,
+        "fatalScore" : 82,
+        "likelihoodScore" : 45,
         "recommendation" : "Do not drive"
     }
     return render(request, "calculate.html", context)
