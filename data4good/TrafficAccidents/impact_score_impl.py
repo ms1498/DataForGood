@@ -58,6 +58,7 @@ def fetch_data(weather_condition, hour, latitude):
     # print(combined_data.to_string(index=False))
     # print("\nCombined Proportion Values, the:")
     # print(combined_proportions.to_string())
-    return combined_proportions
+    print(combined_proportions[6])
+    return [combined_proportions[5], combined_proportions[6], combined_proportions[7]]
 
 fetch_data(weather_condition, hour, latitude)

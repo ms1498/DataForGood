@@ -13,6 +13,7 @@ def calculateRiskPage(request):
     df = filt.filter_data()
     temp_df = df[~df['prim_contributory_cause'].isin(['NOT APPLICABLE', 'UNABLE TO DETERMINE'])]
     top_10_causes = temp_df['prim_contributory_cause'].value_counts().index[:10][0].lower()
+    
     overallScore = 57
     if(overallScore<=100 and overallScore>=70): shouldDrive = "Please do not drive."
     elif(overallScore<70 and overallScore>=30): shouldDrive = "You may be at a higher risk by driving so be careful."
@@ -31,16 +32,24 @@ def calculateRiskPage(request):
     davidScores = fetch_data(weather_condition, hour, latitude)
     #Baseline is one
     # Do something to make this more pretty
+    davidScores[0] = (1 - davidScores[0]) *-100 
+    davidScores[0] = ("{:.1f}".format(round(davidScores[0], 2)))
+
+    davidScores[1] = (1 - davidScores[1]) *-100
+    davidScores[1] = ("{:.1f}".format(round(davidScores[1], 2)))
+
+    davidScores[2] = (1 - davidScores[2]) *-100
+    davidScores[2] = ("{:.1f}".format(round(davidScores[2], 2)))
     # currently thinking displayed as '2x more likely' and '1x less likely'
 
     # Calculate overall
     # overall = davidScores[0] *  davidScores[1] * davidScores[2] * likelihoodScore
 
     context = {
-        "overallScore" : 45,
-        "slightScore" : davidScores[5],
-        "seriousScore" : davidScores[6],
-        "fatalScore" : davidScores[7],
+        "overallScore" : overallScore,
+        "slightScore" : davidScores[0],
+        "seriousScore" : davidScores[1],
+        "fatalScore" : davidScores[2],
         "likelihoodScore" : likelihoodScore,
         "recommendation" : f"{shouldDrive} Most people make mistakes by {top_10_causes}."
     }
