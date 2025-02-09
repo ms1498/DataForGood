@@ -11,7 +11,8 @@ To run this project, you will need the following Python libraries:
 - **mysoc_dataset**  
 - **Django**  
 - **matplotlib**  
-- **seaborn**  
+- **seaborn**
+- **timezonefinder**
 
 ### API Key Requirement  
 
