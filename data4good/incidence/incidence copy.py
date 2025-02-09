@@ -14,22 +14,17 @@ def get_location():
 
 #Cenlat is my random way of writing latitude (returned from the get_location func) for those who are confused
 def find_incidence(cenlat, cenlon):
-    df_constituencies = get_dataset_df(
-        repo_name="2025-constituencies",
-        package_name="parliament_con_2025",
-        version_name="latest",
-        file_name="parl_constituencies_2025.csv",
-        done_survey=True
-    )
-
+    
+    df_constituencies = pd.read_csv("data4good/incidence/parl2025.csv")
     latitude_constituency = df_constituencies["center_lat"]
     longitude_constituency = df_constituencies["center_lon"]
 
+
     df_crashes = pd.read_excel('data4good/incidence/crash_data2023.xlsx')
 
-    dfnew = [(latitude_constituency.iloc[i] - 55.832226046006900) for i in range(len(df_constituencies))]
+    dfnew = [(latitude_constituency.iloc[i] - cenlat) for i in range(len(df_constituencies))]
 
-    dfnew2 = [(longitude_constituency.iloc[i] - -3.110419178471850) for i in range(len(df_constituencies))]
+    dfnew2 = [(longitude_constituency.iloc[i] - cenlon) for i in range(len(df_constituencies))]
 
     dfnew3 = [np.sqrt(dfnew[i] ** 2 + dfnew2[i] ** 2) for i in range(len(df_constituencies))]
 
@@ -50,7 +45,7 @@ def find_incidence(cenlat, cenlon):
 
     percentage_crash = (crash_amount / (found_electorate * 0.615)) * 100 if found_electorate else 0
     
-    percentage_diff = round(((0.3357 - percentage_crash) / percentage_crash) * 100, 3) if percentage_crash else 0
+    percentage_diff = round(((percentage_crash - 0.3357) / 0.3357 ) * 5, 3) if percentage_crash else 0
 
     return percentage_diff
 
