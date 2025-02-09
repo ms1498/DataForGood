@@ -68,11 +68,9 @@ def fetch_data():
     latitude = float(latitude)
     longitude = float(longitude)
     hour = int(filt.get_time(latitude,longitude))
-    #api_key = "ad36e519250ce7c8dc131ebe1c0d561d"
-    #weather_description = filt.get_weather(latitude, longitude, api_key)
-    weather_description = "windy"
+    api_key = "ad36e519250ce7c8dc131ebe1c0d561d"
+    weather_description = filt.get_weather(latitude, longitude, api_key)
     weather_condition = get_weather_category(weather_description)
-    weather_condition = 'Fine + high winds'
     file_paths = {
         'weather': 'TrafficAccidents/data/normalised_proportions_weather_conditions.csv',
         'location': 'TrafficAccidents/data/normalised_proportions_of_accidents_by_constituency.csv',
