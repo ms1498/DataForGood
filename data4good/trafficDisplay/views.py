@@ -19,7 +19,6 @@ def index(request):
     davidScores = fetch_data()
     
     overallScore =( max(davidScores[1], davidScores[2]) * likelihoodScore) *1.5
-    print( overallScore) 
     
     if(overallScore<=100 and overallScore>=70): shouldDrive = "Please do not drive."
     elif(overallScore<70 and overallScore>=30): shouldDrive = "You may be at a higher risk by driving so be careful."
