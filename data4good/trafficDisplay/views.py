@@ -5,7 +5,8 @@ import TrafficAccidents.filterData as filt
 from incidence.incidence import find_incidence, get_location
 
 def index(request):
-    return render(request, "index.html")
+    context = getPlots()
+    return render(request, "index.html", context)
 
 def calculateRiskPage(request):
     df = filt.filter_data()

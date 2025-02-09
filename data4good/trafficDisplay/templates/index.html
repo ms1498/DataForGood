@@ -8,9 +8,6 @@
   --gradient: linear-gradient(to left top, #DD2476 10%, #FF512F 90%) !important;
 }
 
-body {
-  background: #111 !important;
-}
 
 .card {
   background: #222;
@@ -125,6 +122,7 @@ img {
       possible severity of a crash.
     </p>
   </div>
+  <a class="btn btn-primary" href="/trafficDisplay/calculate">Read More</a>
 </div>
 
 <h1 style="text-align: center;">Explaining the Data</h1>
@@ -132,25 +130,49 @@ img {
   Here you can find information from the dataset based on your location. These insights are directly related to your location found by your IP address, so if you are using a VPN, it won't work properly!
 </p>
 
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-  {% for plot_name, plot_image in plots.items %}
-  <div class="col">
-    <div class="card shadow-sm">
-      <img class="bd-placeholder-img card-img-top" width="100%" height="auto" 
-           src="data:image/png;base64,{{ plot_image }}" 
-           alt="{{ plot_name }}" 
-           onclick="showPopup('{{ forloop.counter }}')">
-    </div>
 
-    <!-- Popup for the image -->
-    <div class="popup" id="popup{{ forloop.counter }}">
-      <button class="popup-close" onclick="exitPopup('{{ forloop.counter }}')">X</button>
-      <img src="data:image/png;base64,{{ plot_image }}" alt="{{ plot_name }}">
-    </div>
-  </div>
-  {% empty %}
-  <p style="text-align: center;">No data available for your location.</p>
-  {% endfor %}
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+    <div class="col">
+        <div class="card shadow-sm">
+            <!-- Image thumbnail -->
+            <img class="bd-placeholder-img card-img-top" width="100%" height="auto" src="data:image/png;base64,{{ plot1 }}" alt="Image Thumbnail" onclick="showPopup('1')">
+        </div>
+
+        <!-- Popup for the image -->
+        <div class="popup" id="popup1">
+            <button class="popup-close" onclick="exitPopup('1')">X</button>
+            <img src="data:image/png;base64,{{ plot1 }}" alt="Full Size Image">
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card shadow-sm">
+            <!-- Image thumbnail -->
+            <img class="bd-placeholder-img card-img-top" width="100%" height="auto" src="data:image/png;base64,{{ plot2 }}" alt="Image Thumbnail" onclick="showPopup('2')">
+        </div>
+
+        <!-- Popup for the image -->
+        <div class="popup" id="popup2">
+            <button class="popup-close" onclick="exitPopup('2')">X</button>
+            <img src="data:image/png;base64,{{ plot2 }}" alt="Full Size Image">
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card shadow-sm">
+            <!-- Image thumbnail -->
+            <img class="bd-placeholder-img card-img-top" width="100%" height="auto" src="data:image/png;base64,{{ plot3 }}" alt="Image Thumbnail" onclick="showPopup('3')">
+        </div>
+
+     <!-- Popup for the image -->
+ <!-- Popup for the image -->
+ <div class="popup" id="popup3">
+  <button class="popup-close" onclick="exitPopup('3')">X</button>
+  <img src="data:image/png;base64,{{ plot3 }}" alt="Full Size Image">
 </div>
+</div>
+<a class="btn btn-primary" href="/trafficDisplay/showStats">Read More</a>
+</div>
+
 
 {% endblock %}
