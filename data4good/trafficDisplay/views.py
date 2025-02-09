@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.template import loader
-from TrafficAccidents.calculatePlots import myCoolFunc
+from TrafficAccidents.calculatePlots import getPlots
 import TrafficAccidents.filterData as filt
+from incidence.incidence import find_incidence, get_location
 
 def index(request):
     return render(request, "index.html")
@@ -14,18 +15,24 @@ def calculateRiskPage(request):
     if(overallScore<=100 and overallScore>=70): shouldDrive = "Please do not drive."
     elif(overallScore<70 and overallScore>=30): shouldDrive = "You may be at a higher risk by driving so be careful."
     else: shouldDrive = "You are safe to drive."
+
+
+    cenlat, cenlon = get_location()
+    likelihoodScore = find_incidence(cenlat, cenlon)
+
+
     context = {
         "overallScore" : 57,
         "slightScore" : 21,
         "seriousScore" : 92,
         "fatalScore" : 82,
-        "likelihoodScore" : 45,
+        "likelihoodScore" : likelihoodScore,
         "recommendation" : f"{shouldDrive} Most people make mistakes by {top_10_causes}."
     }
     return render(request, "calculate.html", context)
 
 def showStats(request):
-    plots = myCoolFunc()
+    plots = getPlots()
     context = {
         "plots" : plots
     }
