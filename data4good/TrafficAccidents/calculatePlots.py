@@ -34,22 +34,6 @@ def myCoolFunc():
     img.seek(0)
     plot1 = base64.b64encode(img.getvalue()).decode()
 
-    # Plot 2: Injury Severity by Road Type
-    plt.figure(figsize=(10, 5))
-    ax = sns.countplot(data=filtered_df, x='most_severe_injury', order=filtered_df['most_severe_injury'].value_counts().index)
-    plt.title("Injury Severity Distribution", fontsize=14)
-    plt.xticks(rotation=30, ha='right', fontsize=12)  # Rotate slightly and align right
-    plt.xlabel("Most Severe Injury", fontsize=12)  # Label X-axis properly
-    plt.ylabel("Count", fontsize=12)
-    plt.tight_layout()  # Adjust layout to fit everything
-   
-    img = io.BytesIO()
-    plt.savefig(img, format='png')
-    plt.close()
-    img.seek(0)
-    plot2 = base64.b64encode(img.getvalue()).decode()
-    # plt.show()
-
     # Plot 3: Crash Type Distribution
     injury_counts = filtered_df.groupby(['trafficway_type', 'most_severe_injury']).size().unstack().fillna(0)
     injury_counts.plot(kind='bar', stacked=True, figsize=(10, 6))
@@ -128,7 +112,7 @@ def myCoolFunc():
     plt.savefig(img, format='png')
     plt.close()
     img.seek(0)
-    plot7 = base64.b64encode(img.getvalue()).decode()
+    plot2 = base64.b64encode(img.getvalue()).decode()
     # plt.show()
 
 
@@ -139,7 +123,6 @@ def myCoolFunc():
         "plot4" : plot4,
         "plot5" : plot5,
         "plot6" : plot6,
-        "plot7" : plot7
                }
 
     return context
