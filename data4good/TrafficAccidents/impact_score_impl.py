@@ -24,11 +24,14 @@ def get_weather_category(weather_description):
     
     return "Category not found"  # Return this if no category matches
 
-hour = filt.get_time()
 latitude, longitude = filt.get_location()
-api_key = "ad36e519250ce7c8dc131ebe1c0d561d"
-weather_description = filt.get_weather(latitude, longitude, api_key)
+print(latitude)
+hour = int(filt.get_time(latitude,longitude))
+#api_key = "ad36e519250ce7c8dc131ebe1c0d561d"
+#weather_description = filt.get_weather(latitude, longitude, api_key)
+weather_description = "windy"
 weather_condition = get_weather_category(weather_description)
+weather_condition = 'Fine + high winds'
 
 
 def find_incidence(cenlat):
