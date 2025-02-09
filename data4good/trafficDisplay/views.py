@@ -29,15 +29,18 @@ def calculateRiskPage(request):
 
     # Get David's numbers
     davidScores = fetch_data(weather_condition, hour, latitude)
+    #Baseline is one
+    # Do something to make this more pretty
+    # currently thinking displayed as '2x more likely' and '1x less likely'
 
     # Calculate overall
     # overall = davidScores[0] *  davidScores[1] * davidScores[2] * likelihoodScore
 
     context = {
         "overallScore" : 45,
-        "slightScore" : davidScores[0],
-        "seriousScore" : davidScores[1],
-        "fatalScore" : davidScores[2],
+        "slightScore" : davidScores[5],
+        "seriousScore" : davidScores[6],
+        "fatalScore" : davidScores[7],
         "likelihoodScore" : likelihoodScore,
         "recommendation" : f"{shouldDrive} Most people make mistakes by {top_10_causes}."
     }
