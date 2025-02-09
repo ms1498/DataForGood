@@ -42,17 +42,38 @@
 
     <h2>Likelihood of Crash</h2>
     <p>
-        The <b>Likelihood of Crash</b> metric uses constituency data (linked in the footer) to provide location-based crash statistics.
-        This data represents the number of crashes occurring within a constituency, normalized against a national average. By comparing
-        this information, we determine whether a driver in a specific area is at <b>higher or lower risk</b> of a collision compared 
-        to the national average in England.
+        The <b>Likelihood of Crash</b> metric calculates <b>the likelihood of an accident occuring in a given location.</b> This 
+        calculation uses the latitude and longitude of the user based on their IP address to calculate their nearest constituency 
+        (using euclidean distance from a constituency's centre point), and then cross references their constituency's population 
+        and crash frequency data to give a value. Before acquiring this value, the consitutency's population data is modified by reducing the 
+        population 'size' to represent the number of elegible drivers (on average) in the UK - approx 60%. The constituency's frequency
+        is then normalised against the country average to work out how it compares.
     </p>
 
-    <h2>Crash Severity</h2>
-    <p>
-        The <b>Crash Severity</b> metric estimates the severity of an accident, assuming a crash occurs. This calculation uses data from 
-        two sources (linked in the footer) to determine the probability of different crash outcomes:
-    </p>
+    <h2>Methodology for Impact Score Calculation</h2>
+<p>
+All impact score data is read from the UK government database on 2023 road traffic collisions.
+
+Calculating Impact Score Based on Time of Day:
+Calculate Average Proportion: It calculates the proportions of slight, serious, and fatal accidents for each hour of the day. It then compares this with others hours of the day to determine the risk.
+Processed Data: Contains the time of day and the average proportion of incidents categorised as slight/serious/fatal.
+
+Calculating Impact Score Based on Weather and Road Conditions:
+Categorise Weather Conditions: Maps various weather descriptions to predefined categories (e.g., "Fine + high winds", "Raining no high winds"). Normalises against a control variable (dry, clear conditions) with a baseline of 1.
+Processed Data: Categorised weather conditions and their impact on accident severity.
+
+Calculating Impact Score Based on Location:
+Find Closest Constituency: Calculates the closest constituency based on the user's latitude and longitude using a Euclidean distance calculation.
+Processing Data: Maps the user's constituency to LOSA map areas and the related accident data in those areas, comparing it against national averages.
+Processed Data: Includes the constituency and related accident data, helping to understand the severity of crashes in a user's location.
+
+Calculating Overall Impact Score:
+Fetch Data: The script fetches the user's location, time of day, and weather condition from their IP address and a weather API.
+Load Processed Data: Loads processed data for weather, time, and location from respective CSV files.
+Filter Data: Filters data based on user inputs (weather condition, hour of the day, and constituency).
+Combine Data: Combines filtered data into a single DataFrame.
+Calculate Impact Scores: Calculates the product of the proportions for slight, serious, and fatal accidents, filtering out zero values before the calculation.
+Return Impact Scores: Combined proportion values for slight, serious, and fatal accidents are returned as the impact scores. </p>
     <ul>
         <li><b>Slight:</b> No hospital treatment required</li>
         <li><b>Serious:</b> Hospital treatment required</li>
