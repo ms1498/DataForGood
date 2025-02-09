@@ -5,48 +5,83 @@
 {% block content %}
 
 <style>
-    #popup {
-      position: fixed;
-      top: 10%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80%;
-      height: 80%;
-      background: white;
-      display: none; /* Hidden initially */
-      z-index: 1000;
+    /* Popup modal */
+    .popup {
+        position: fixed;
+        top: 10%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        background: white;
+        display: none; /* Initially hidden */
+        z-index: 1000;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
-  </style>
 
+    .popup img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .popup:hover{
+      border: solid black;
+    }
+
+    /* Popup close button */
+    .popup-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 24px;
+        color: black;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    /* Image hover effects */
+    img {
+        transition: border 0.3s ease, box-shadow 0.3s ease;
+    }
+
+</style>
 
 <script>
+    // Function to show the popup when an image is clicked
     function showPopup(card) {
-      const popup = document.getElementsByClassName('popup' + card);
-      popup[0].style.display = 'block';
+        const popup = document.getElementById('popup' + card);
+        popup.style.display = 'block';
     }
-  
+
+    // Function to hide the popup
     function exitPopup(card) {
-      const popup = document.getElementsByClassName('popup' + card);
-      popup[0].style.display = 'none';
+        const popup = document.getElementById('popup' + card);
+        popup.style.display = 'none';
     }
-  </script>
+</script>
 
-
-<h1>Explaning the Data</h1>
-<p>
-    Here you can find information from the dataset based on your location. These insights are directly realated to your location found by your IP address, so if you are using a VPN it won't work properly!
+<h1 style="text-align: center;">Explaining the Data</h1>
+<p style="text-align: center;">
+    Here you can find information from the dataset based on your location. These insights are directly related to your location found by your IP address, so if you are using a VPN it won't work properly!
 </p>
 
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-{% for plot_name, plot_image in plots.items %}
-        <div class="col">
-          <div class="card shadow-sm">
-            <img class="bd-placeholder-img card-img-top" width="100%" height="auto"  src="data:image/png;base64,{{ plot_image  }}" alt="ahh">
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            </div>
-          </div>
+    {% for plot_name, plot_image in plots.items %}
+    <div class="col">
+        <div class="card shadow-sm">
+            <!-- Image thumbnail -->
+            <img class="bd-placeholder-img card-img-top" width="100%" height="auto" src="data:image/png;base64,{{ plot_image }}" alt="Image Thumbnail" onclick="showPopup('{{ forloop.counter }}')">
         </div>
-{% endfor %}
+
+        <!-- Popup for the image -->
+        <div class="popup" id="popup{{ forloop.counter }}">
+            <button class="popup-close" onclick="exitPopup('{{ forloop.counter }}')">X</button>
+            <img src="data:image/png;base64,{{ plot_image }}" alt="Full Size Image">
+        </div>
+    </div>
+    {% endfor %}
 </div>
+
 {% endblock %}
