@@ -25,183 +25,132 @@ body {
   background: var(--gradient) !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
-  border-image-source:  var(--gradient) !important; 
+  border-image-source: var(--gradient) !important;
   text-decoration: none;
   transition: all .4s ease;
 }
 
 .btn:hover, .btn:focus {
-      background: var(--gradient) !important;
+  background: var(--gradient) !important;
   -webkit-background-clip: none !important;
   -webkit-text-fill-color: #fff !important;
   border: 5px solid #fff !important; 
   box-shadow: #222 1px 0 10px;
   text-decoration: underline;
 }
+
+/* Popup modal */
+.popup {
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  background: white;
+  display: none; /* Initially hidden */
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.popup img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.popup:hover {
+  border: solid black;
+}
+
+/* Popup close button */
+.popup-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  color: black;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Image hover effects */
+img {
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
 </style>
 
-<div class="blogPost">
-  <div class="p-4 p-md-5 mb-5 mt-5 rounded text-body-emphasis bg-body-secondary">
-    <div class="col-lg-6 px-0">
-      <h1 class="display-4 fst-italic">Check how safe your drive will be</h1>
-      <p class="lead my-3">Calculate how likely a crash is to occur, and how severe a crash would be given your location, weather and other metrics</p>
-      <p class="lead mb-0"><a href="/trafficDisplay/calculate" class="text-body-emphasis fw-bold">Calculate now</a></p>
-    </div>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const score = Number("{{ overallScore|default:0 }}");  
+    setBackground(score);
+  });
+
+  function setBackground(score){
+    const scoreBlock = document.getElementById('riskScore');
+    scoreBlock.classList.remove("bg-danger-subtle", "bg-warning-subtle", "bg-success-subtle");
+    if(score > 70){
+      scoreBlock.classList.add("bg-danger-subtle");
+    } else if(score > 30){
+      scoreBlock.classList.add("bg-warning-subtle");
+    } else {
+      scoreBlock.classList.add("bg-success-subtle");
+    }
+  }
+
+  function showPopup(card) {
+    document.getElementById('popup' + card).style.display = 'block';
+  }
+
+  function exitPopup(card) {
+    document.getElementById('popup' + card).style.display = 'none';
+  }
+</script>
+
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<div id="riskScore" class="p-4 p-md-5 mb-5 mt-5 rounded text-body-emphasis text-center">
+  <div class="px-0">
+    <h3 class="display-4 fst-italic">Your Risk Score</h3>
+    <h1>{{ overallScore }} / 100</h1>
+    <p class="lead my-3">Our recommendation is: {{ recommendation }}</p>
+    <p class="lead mb-0">
+      We calculate this using your location, the weather where you are, and the time of day. 
+      It takes into account the combination of the likelihood of getting into a crash, and the 
+      possible severity of a crash.
+    </p>
   </div>
 </div>
 
-<div class="charts">
-  <div class="container mx-auto mt-4">
-    <div class="row">
-      <div class="col-md-4">
-        <div class="card" style="width: 18rem;">
-    <img src="https://i.imgur.com/ZTkt4I5.jpg" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        <a href="#" class="btn mr-2"><i class="fas fa-link"></i> Visit Site</a>
-      <a href="#" class="btn "><i class="fab fa-github"></i> Github</a>
+<h1 style="text-align: center;">Explaining the Data</h1>
+<p style="text-align: center;">
+  Here you can find information from the dataset based on your location. These insights are directly related to your location found by your IP address, so if you are using a VPN, it won't work properly!
+</p>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+  {% for plot_name, plot_image in plots.items %}
+  <div class="col">
+    <div class="card shadow-sm">
+      <img class="bd-placeholder-img card-img-top" width="100%" height="auto" 
+           src="data:image/png;base64,{{ plot_image }}" 
+           alt="{{ plot_name }}" 
+           onclick="showPopup('{{ forloop.counter }}')">
     </div>
-    </div>
-      </div>    
-        <div class="col-md-4">
-  <div class="card" style="width: 18rem;">
-    <img src="https://i.imgur.com/ZTkt4I5.jpg" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      <a href="#" class="btn  mr-2"><i class="fas fa-link"></i> Visit Site</a>
-      <a href="#" class="btn"><i class="fab fa-github"></i> Github</a>
-    </div>
-    </div>
-      </div>    
-            <div class="col-md-4">
-  <div class="card" style="width: 18rem;">
-    <img src="https://i.imgur.com/ZTkt4I5.jpg" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      <a href="#" class="btn mr-2"><i class="fas fa-link"></i> Visit Site</a>
-      <a href="#" class="btn "><i class="fab fa-github"></i> Github</a>
-    </div>
-    </div>
-    </div>
-      
-      <div class="col-md-4">
-        <div class="card" style="width: 18rem;">
-    <img src="https://i.imgur.com/ZTkt4I5.jpg" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        <a href="#" class="btn mr-2"><i class="fas fa-link"></i> Visit Site</a>
-      <a href="#" class="btn"><i class="fab fa-github"></i> Github</a>
-    </div>
-    </div>
-      </div>    
-        <div class="col-md-4">
-  <div class="card" style="width: 18rem;">
-    <img src="https://i.imgur.com/ZTkt4I5.jpg" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      <a href="#" class="btn mr-2"><i class="fas fa-link"></i> Visit Site</a>
-      <a href="#" class="btn"><i class="fab fa-github"></i> Github</a>
-    </div>
-    </div>
-      </div>    
-            <div class="col-md-4">
-  <div class="card" style="width: 18rem;">
-    <img src="https://i.imgur.com/ZTkt4I5.jpg" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      <a href="#" class="btn mr-2"><i class="fas fa-link"></i> Visit Site</a>
-      <a href="#" class="btn"><i class="fab fa-github"></i> Github</a>
-    </div>
-    </div>
-    </div>
-      
-      <div class="col-md-4">
-        <div class="card" style="width: 18rem;">
-    <img src="https://i.imgur.com/ZTkt4I5.jpg" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        <a href="#" class="btn mr-2"><i class="fas fa-link"></i> Visit Site</a>
-      <a href="#" class="btn"><i class="fab fa-github"></i> Github</a>
-    </div>
-    </div>
-      </div>    
-        <div class="col-md-4">
-  <div class="card" style="width: 18rem;">
-    <img src="https://i.imgur.com/ZTkt4I5.jpg" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      <a href="#" class="btn mr-2"><i class="fas fa-link"></i> Visit Site</a>
-      <a href="#" class="btn"><i class="fab fa-github"></i> Github</a>
-    </div>
-    </div>
-      </div>    
-            <div class="col-md-4">
-  <div class="card" style="width: 18rem;">
-    <img src="https://i.imgur.com/ZTkt4I5.jpg" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      <a href="#" class="btn btn-primary mr-2"><i class="fas fa-link"></i> Visit Site</a>
-      <a href="#" class="btn btn-primary"><i class="fab fa-github"></i> Github</a>
-    </div>
-    </div>
-    </div>
-      
-      <div class="col-md-4">
-        <div class="card" style="width: 18rem;">
-    <img src="https://i.imgur.com/ZTkt4I5.jpg" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        <a href="#" class="btn mr-2"><i class="fas fa-link"></i> Visit Site</a>
-      <a href="#" class="btn"><i class="fab fa-github"></i> Github</a>
-    </div>
-    </div>
-      </div>    
-        <div class="col-md-4">
-  <div class="card" style="width: 18rem;">
-    <img src="https://i.imgur.com/ZTkt4I5.jpg" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      <a href="#" class="btn mr-2"><i class="fas fa-link"></i> Visit Site</a>
-      <a href="#" class="btn"><i class="fab fa-github"></i> Github</a>
-    </div>
-    </div>
-      </div>    
-            <div class="col-md-4">
-  <div class="card" style="width: 18rem;">
-    <img src="https://i.imgur.com/ZTkt4I5.jpg" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      <a href="#" class="btn mr-2"><i class="fas fa-link"></i> Visit Site</a>
-      <a href="#" class="btn"><i class="fab fa-github"></i> Github</a>
-    </div>
-    </div>
+
+    <!-- Popup for the image -->
+    <div class="popup" id="popup{{ forloop.counter }}">
+      <button class="popup-close" onclick="exitPopup('{{ forloop.counter }}')">X</button>
+      <img src="data:image/png;base64,{{ plot_image }}" alt="{{ plot_name }}">
     </div>
   </div>
-    </div>
+  {% empty %}
+  <p style="text-align: center;">No data available for your location.</p>
+  {% endfor %}
 </div>
 
 {% endblock %}
