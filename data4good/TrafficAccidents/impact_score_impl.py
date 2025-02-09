@@ -1,4 +1,5 @@
 import pandas as pd
+import np as np
 from mysoc_dataset import get_dataset_df
 import TrafficAccidents.filterData as filt
 
@@ -25,7 +26,8 @@ def get_weather_category(weather_description):
     return "Category not found"  # Return this if no category matches
 
 latitude, longitude = filt.get_location()
-print(latitude)
+latitude = float(latitude)
+longitude = float(longitude)
 hour = int(filt.get_time(latitude,longitude))
 #api_key = "ad36e519250ce7c8dc131ebe1c0d561d"
 #weather_description = filt.get_weather(latitude, longitude, api_key)
@@ -34,23 +36,41 @@ weather_condition = get_weather_category(weather_description)
 weather_condition = 'Fine + high winds'
 
 
-def find_incidence(cenlat):
-    df_constituencies = get_dataset_df(
-        repo_name="2025-constituencies",
-        package_name="parliament_con_2025",
-        version_name="latest",
-        file_name="parl_constituencies_2025.csv",
-        done_survey=True
-    )
+def find_incidence(cenlat, cenlon):
+    
+    df_constituencies = pd.read_csv("incidence/parl2025.csv")
     latitude_constituency = df_constituencies["center_lat"]
+    longitude_constituency = df_constituencies["center_lon"]
 
-    dfnew = [abs(latitude_constituency.iloc[i] - cenlat) for i in range(len(df_constituencies))]
 
-    ind = dfnew.index(min(dfnew))
+    df_crashes = pd.read_excel('incidence/crash_data2023.xlsx')
+
+    dfnew = [(latitude_constituency.iloc[i] - cenlat) for i in range(len(df_constituencies))]
+
+    dfnew2 = [(longitude_constituency.iloc[i] - cenlon) for i in range(len(df_constituencies))]
+
+    dfnew3 = [ np.sqrt(dfnew[i] ** 2 + dfnew2[i] ** 2) for i in range(len(df_constituencies))]
+
+    ind = dfnew3.index(min(dfnew3))
 
     dftest = df_constituencies.iloc[ind]
-    found_location = dftest["name"]
-    return found_location
+    found_location = dftest["gss_code"]
+    found_electorate = dftest["electorate"]
+
+    print(found_location)
+
+    crash_amount_place = df_crashes[df_crashes["LSOA"] == found_location]
+
+    if not crash_amount_place.empty:
+        crash_amount = max(crash_amount_place["Casualties"])
+    else:
+        crash_amount = 0
+
+    percentage_crash = (crash_amount / (found_electorate * 0.615)) * 100 if found_electorate else 0
+
+    percentage_diff = round(((percentage_crash - 0.3357) / 0.3357 ) * 5, 3) if percentage_crash else 0
+
+    return percentage_diff
 
 def fetch_data(weather_condition, hour, latitude):
     file_paths = {
