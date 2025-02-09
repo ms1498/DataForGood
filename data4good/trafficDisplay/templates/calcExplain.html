@@ -4,32 +4,75 @@
 
 {% block content %}
 
-<h1>How our numbers are calculated</h1>
+<title>Risk Calculation Metrics</title>
+    <style>
+        h1 {
+            text-align: center;
+            max-width: 800px;
+            line-height: 1.6;
+        }
+        h2 {
+            color: #003366;
+            border-bottom: 2px solid #0056b3;
+            padding-bottom: 5px;
+            margin: 40px auto;
+            line-height: 1.6;
+            color: #333;
+        }
+        p{
+            padding-bottom: 20px;
+        }
+        b {
+            color: #007bff;
+        }
+    </style>
+</head>
 
-<h2> Our Metrics </h2>
-<p> Our three main metrics are <b>Likelihood of Crash</b>, <b>Crash Severity</b> and <b>Overall Risk Factor</b> (which is a combination 
-    of the two)these metrics combine different data sources to create a hollistic view of their respective metric occuring given the 
-    users current location, weather and the date and time. These were chosen as they provide the essential information needed to calculate 
-    a risk to a driver and their vehicle </p>
+    <h1 style = "color: #333; margin: 40px auto;">How Our Numbers Are Calculated</h1>
 
-<h2>Likelihood of Crash</h2>
-<p> Algorithm written by James. Likelihood of crash uses constituency data to provide location based crash information (linked in footer), 
-    this data contains the number of crashes that occur within a constituency normalised to a national average. This is then used to compare
-    whether a person is at a higher risk of a collision in their area than the average areas in England.
-</p>
+    <h2>Our Metrics</h2>
+    <p>
+        Our three main metrics are <b>Likelihood of Crash</b>, <b>Crash Severity</b>, and <b>Overall Risk Factor</b>. The 
+        <b>Overall Risk Factor</b> is a combination of the first two. These metrics integrate various data sources to create a holistic 
+        view of crash probabilities based on the user's <b>location, weather conditions, date, and time</b>.
+    </p>
+    <p>
+        We selected these metrics because they provide essential information to assess potential risks to a driver and their vehicle.
+    </p>
 
-<h2>Crash Severity</h2>
-<p> Algorithm written by David. Calculates the serverity of a crash assuming a crash occurs. This takes data from two tables (linked in the 
-    footer) to determine if the chance of a slight (no hospital needed), serious (hospital needed) or fatal (death or permenant injury). This
-    again takes into account the location, weather and date and time to calculate these chances and are normalised in relation to a national 
-    average
-</p>
+    <h2>Likelihood of Crash</h2>
+    <p>
+        The <b>Likelihood of Crash</b> metric uses constituency data (linked in the footer) to provide location-based crash statistics.
+        This data represents the number of crashes occurring within a constituency, normalized against a national average. By comparing
+        this information, we determine whether a driver in a specific area is at <b>higher or lower risk</b> of a collision compared 
+        to the national average in England.
+    </p>
 
-<h2>Overall Risk Factor</h2>
-<p> This score out of 100 combines the likelihood of a crash occuring and the predicted severity of a crash to provide an overall risk assessment
-    For this a score of 50 is the average chance
-    idk we'll figure it out
-</p>
+    <h2>Crash Severity</h2>
+    <p>
+        The <b>Crash Severity</b> metric estimates the severity of an accident, assuming a crash occurs. This calculation uses data from 
+        two sources (linked in the footer) to determine the probability of different crash outcomes:
+    </p>
+    <ul>
+        <li><b>Slight:</b> No hospital treatment required</li>
+        <li><b>Serious:</b> Hospital treatment required</li>
+        <li><b>Fatal:</b> Death or permanent injury</li>
+    </ul>
+    <p>
+        Like the <b>Likelihood of Crash</b>, this metric considers <b>location, weather, date, and time</b>, and the results are normalized 
+        against a national average.
+    </p>
+
+    <h2>Overall Risk Factor</h2>
+    <p>
+        The <b>Overall Risk Factor</b> is a score out of 100 that combines both <b>Likelihood of Crash</b> and <b>Crash Severity</b> to 
+        provide a comprehensive risk assessment.
+    </p>
+    <p>
+        A score of <b>50 represents the average risk level</b>—values above or below this indicate <b>higher or lower risk</b> relative to 
+        national trends.
+    </p>
+
 
 
 {% endblock %}
