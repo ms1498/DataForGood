@@ -1,5 +1,5 @@
 import pandas as pd
-import np as np
+import numpy as np
 from mysoc_dataset import get_dataset_df
 import TrafficAccidents.filterData as filt
 
@@ -90,7 +90,7 @@ def fetch_data(weather_condition, hour, latitude):
     time_data = df_time[df_time['hour'] == hour]
 
     # Find location based on latitude
-    constituency = find_incidence(latitude)
+    constituency = find_incidence(latitude, longitude)
 
     # Load location data
     df_location = pd.read_csv(file_paths['location'])
