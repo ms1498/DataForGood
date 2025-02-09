@@ -6,7 +6,25 @@ from incidence.incidence import find_incidence, get_location
 from TrafficAccidents.impact_score_impl import fetch_data
 
 def index(request):
-    context = getPlots()
+    # Get James's Number
+    cenlat, cenlon = get_location()
+
+    likelihoodScore = (find_incidence(cenlat, cenlon) + 50 )/ 2
+
+
+    # Get David's numbers
+    davidScores = fetch_data()
+    
+    overallScore =( max(davidScores[1], davidScores[2]) * likelihoodScore) *1.5
+    overallScore = ("{:.1f}".format(round(overallScore, 2)))
+    
+    plots = getPlots()
+    context = {
+        "plot1" : plots["plot1"],
+        "plot2" : plots["plot2"],
+        "plot3" : plots["plot3"],
+        "overallScore": overallScore
+    }
     return render(request, "index.html", context)
 
 def calculateRiskPage(request):
@@ -24,8 +42,7 @@ def calculateRiskPage(request):
     # Get David's numbers
     davidScores = fetch_data()
     
-    if(likelihoodScore > 0):
-        overallScore =( max(davidScores[1], davidScores[2]) * likelihoodScore) *1.5
+    overallScore =( max(davidScores[1], davidScores[2]) * likelihoodScore) *1.5
     #Baseline is one
     # Do something to make this more pretty
     davidScores[0] = (1 - davidScores[0]) *-10
