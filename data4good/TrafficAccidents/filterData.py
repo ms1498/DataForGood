@@ -97,11 +97,10 @@ def get_weather(lat, lon, api_key):
 def filter_data():
     
     latitude, longitude = get_location()
-    #api_key = "ad36e519250ce7c8dc131ebe1c0d561d"
+    api_key = "ad36e519250ce7c8dc131ebe1c0d561d"
     current_time = int(get_time(latitude, longitude))
-    #weather_description = get_weather(latitude, longitude, api_key)
-    #weather_condition = get_weather_category(weather_description)\
-    weather_condition = "CLEAR"
+    weather_description = get_weather(latitude, longitude, api_key)
+    weather_condition = get_weather_category(weather_description)
 
     file_path = "data4good/TrafficAccidents/traffic_accidents.csv"
     file_path = "TrafficAccidents/traffic_accidents.csv"
