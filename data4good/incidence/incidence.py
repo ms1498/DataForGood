@@ -15,11 +15,11 @@ def get_location():
 #Cenlat is my random way of writing latitude (returned from the get_location func) for those who are confused
 def find_incidence(cenlat, cenlon):
     
-    df_constituencies = pd.read_csv("data4good/incidence/parl2025.csv")
+    df_constituencies = pd.read_csv("incidence/parl2025.csv")
     latitude_constituency = df_constituencies["center_lat"]
     longitude_constituency = df_constituencies["center_lon"]
     
-    df_crashes = pd.read_excel('data4good/incidence/crash_data2023.xlsx')
+    df_crashes = pd.read_excel('incidence/crash_data2023.xlsx')
 
     dfnew = [(latitude_constituency.iloc[i] - cenlat) for i in range(len(df_constituencies))]
 
