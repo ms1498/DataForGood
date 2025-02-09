@@ -14,14 +14,11 @@ def calculateRiskPage(request):
     temp_df = df[~df['prim_contributory_cause'].isin(['NOT APPLICABLE', 'UNABLE TO DETERMINE'])]
     top_10_causes = temp_df['prim_contributory_cause'].value_counts().index[:10][0].lower()
     
-    overallScore = 57
-    if(overallScore<=100 and overallScore>=70): shouldDrive = "Please do not drive."
-    elif(overallScore<70 and overallScore>=30): shouldDrive = "You may be at a higher risk by driving so be careful."
-    else: shouldDrive = "You are safe to drive."
 
     # Get James's Number
     cenlat, cenlon = get_location()
     likelihoodScore = find_incidence(cenlat, cenlon)
+    # likelihoodScore = 53.41
 
 
     weather_condition = 'Snowing'
@@ -30,21 +27,30 @@ def calculateRiskPage(request):
 
     # Get David's numbers
     davidScores = fetch_data(weather_condition, hour, latitude)
+    
+    if(likelihoodScore > 0):
+        overallScore = max(davidScores[1], davidScores[2]) * likelihoodScore *2
+    else:
+        overallScore = max(davidScores[1], davidScores[2]) * likelihoodScore *1
     #Baseline is one
     # Do something to make this more pretty
     davidScores[0] = (1 - davidScores[0]) *-100 
-    davidScores[0] = ("{:.1f}".format(round(davidScores[0], 2)))
-
     davidScores[1] = (1 - davidScores[1]) *-100
-    davidScores[1] = ("{:.1f}".format(round(davidScores[1], 2)))
-
     davidScores[2] = (1 - davidScores[2]) *-100
-    davidScores[2] = ("{:.1f}".format(round(davidScores[2], 2)))
+    
     # currently thinking displayed as '2x more likely' and '1x less likely'
 
     # Calculate overall
-    # overall = davidScores[0] *  davidScores[1] * davidScores[2] * likelihoodScore
+    davidScores[0] = ("{:.1f}".format(round(davidScores[0], 2)))
+    davidScores[1] = ("{:.1f}".format(round(davidScores[1], 2)))
+    davidScores[2] = ("{:.1f}".format(round(davidScores[2], 2)))
 
+
+    if(overallScore<=100 and overallScore>=70): shouldDrive = "Please do not drive."
+    elif(overallScore<70 and overallScore>=30): shouldDrive = "You may be at a higher risk by driving so be careful."
+    else: shouldDrive = "You are safe to drive."
+
+    overallScore = ("{:.1f}".format(round(overallScore, 2)))
     context = {
         "overallScore" : overallScore,
         "slightScore" : davidScores[0],
