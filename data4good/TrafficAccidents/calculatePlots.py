@@ -106,7 +106,7 @@ def getPlots():
     plt.figure(figsize=(10, 6))
     sns.countplot(data=filtered_df, x='most_severe_injury')
 
-    plt.title(f"Injury Severity for CLEAR", fontsize=14)
+    plt.title(f'Injury Severity for {weather} weather', fontsize=14)
     plt.xticks(rotation=45, fontsize=12)
     plt.xlabel("Most Severe Injury", fontsize=12)
     plt.ylabel("Count of Accidents", fontsize=12)
