@@ -15,36 +15,72 @@
           <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
               <a href="/trafficDisplay" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
-                <h1 class="bi me-2">Home</h1>
+                <h1 class="bi me-2">Safe2Drive</h1>
               </a>
     
               <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
                 <li>
-                  <a href="/trafficDisplay" class="nav-link text-secondary">
-                    <h2 class="bi d-block mx-auto mb-1">Home</h2>
+                  <a href="/trafficDisplay" class="nav-link text-white">
+                    <h3 class="bi d-block mx-auto mb-2">Home</h3>
                   </a>
                 </li>
                 <li>
                   <a href="/trafficDisplay/calculate" class="nav-link text-white">
-                    <h2 class="bi d-block mx-auto mb-1">calculate</h2>
+                    <h3 class="bi d-block mx-auto mb-2">Calculator</h3>
                   </a>
                 </li>
                 <li>
                     <a href="/trafficDisplay/showStats" class="nav-link text-white">
-                      <h2 class="bi d-block mx-auto mb-1">Third</h2>
+                      <h3 class="bi d-block mx-auto mb-2">Insights</h3>
                     </a>
                 </li>
+                <li>
+                  <a href="/trafficDisplay/calculationExplain" class="nav-link text-white">
+                    <h3 class="bi d-block mx-auto mb-2">More info</h3>
+                  </a>
+              </li>
               </ul>
             </div>
           </div>
         </div>
       </header>
-      
 
-      <div class="container">
+    <div class="container mb-2">
     {% block content %}
     {% endblock %}
-</div>
+    </div>
+    
+    <div class="px-3 py-2 text-bg-dark border-bottom">
+      <footer class="py-3 my-4 border-top">
+        <div class="container">
+          <div class="row">
+            
+            <!-- Safe2Drive Team (Left Column) -->
+            <div class="col-md-6">
+              <h3 class="mb-3">Safe2Drive Team</h3>
+              <ul class="list-group text-bg-dark">
+                <li class="list-group-item"><a class="text-reset text-decoration-none" href="#">James Beasley</a></li>
+                <li class="list-group-item"><a  class="text-reset text-decoration-none" href="#">Annabelle Ronald</a></li>
+                <li class="list-group-item"><a  class="text-reset text-decoration-none" href="#">Tilly Searle</a></li>
+                <li class="list-group-item"><a  class="text-reset text-decoration-none" href="#">David White</a></li>
+              </ul>
+            </div>
+    
+            <!-- Our Datasets (Right Column) -->
+            <div class="col-md-6">
+              <h3 class="mb-3">Our Datasets</h3>
+              <ul class="list-group text-bg-dark link-dark">
+                <li class="list-group-item"><a  class="text-reset text-decoration-none" href="https://www.kaggle.com/datasets/oktayrdeki/traffic-accidents?resource=download">Traffic Data (assigned set)</a></li>
+                <li class="list-group-item"><a  class="text-reset text-decoration-none" href="#">James's Sets</a></li>
+                <li class="list-group-item"><a  class="text-reset text-decoration-none" href="#">David's Sets</a></li>
+              </ul>
+            </div>
+    
+          </div>
+        </div>
+      </footer>
+    </div>
+    
 </body>
 
 </html>

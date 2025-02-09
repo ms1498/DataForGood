@@ -4,7 +4,83 @@
 
 {% block content %}
 
-<h1>Another Page</h1>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const score = parseInt("{{ overallScore }}", 10);  // Ensure it's a number
+        setBackground(score);
+    });
+
+    function setBackground(score){
+        const scoreBlock = document.getElementById('riskScore');
+        scoreBlock.classList.remove("bg-danger-subtle", "bg-warning-subtle", "bg-success-subtle");
+        if(score > 70){
+            scoreBlock.classList.add("bg-danger-subtle");
+        } else if(score > 30){
+            scoreBlock.classList.add("bg-warning-subtle");
+        } else{
+            scoreBlock.classList.add("bg-success-subtle");
+        }
+    }
+</script>
+
+<div id="riskScore" class="p-4 p-md-5 mb-5 mt-5 rounded text-body-emphasis text-center" onload="setBackground('{{ overallScore }}')">
+    <div class="px-0">
+        <h3 class="display-4 fst-italic">Your Risk Score</h3>
+        <h1>{{ overallScore }} / 100</h1>
+        <p class="lead my-3">Our recommendation is: {{ recommendation }}</p>
+        <p class="lead mb-0">
+            We calculate this using your location, the weather where you are, and the time of day. 
+            It takes into account the combination of the likelihood of getting into a crash, and the 
+            possible severity of a crash
+        </p>
+    </div>
+</div>
+
+<div class="text-center">
+<h1>Given a Crash</h1>
+<p>If you were to crash. Here are the likelihoods of different severities of crash</p>
+</div>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+    <div class="mb-5 mt-3">
+        <div class="p-4 p-md-5rounded text-body-emphasis bg-body-secondary text-center ">
+            <div class="px-0">
+                <h3 class="display-4 fst-italic">Slight</h3>
+                <h1>{{ slightScore }} x</h1>
+                <p class="lead mb-0">You are this much more likely compared to the national average that someone would be slightly injured (care at home) or no injury in a crash</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 mt-3">
+        <div class="p-4 p-md-5rounded text-body-emphasis bg-body-secondary text-center ">
+            <div class="px-0">
+                <h3 class="display-4 fst-italic">Serious</h3>
+                <h1>{{ seriousScore }} x</h1>
+                <p class="lead mb-0">You are this much more likely compared to the national average that someone would be seriously injured (hospitalised) in a crash</p>
+            </div>
+        </div>
+    </div>
+
+        <div class="mb-5 mt-3">
+            <div class="p-4 p-md-5rounded text-body-emphasis bg-body-secondary text-center ">
+                <div class="px-0">
+                    <h3 class="display-4 fst-italic">Fatal</h3>
+                    <h1>{{ fatalScore }}x</h1>
+                    <p class="lead mb-0">You are this much more likely compared to the national average that someone would die or suffer long-term affects</p>
+                </div>
+            </div>
+        </div>
+</div>
+
+<div class="p-4 p-md-5 mb-5 mt-5 rounded text-body-emphasis bg-body-secondary text-center">
+    <div class="px-0">
+        <h3 class="display-4 fst-italic">Likelihood of a crash</h3>
+        <h1>{{ likelihoodScore }} / 100</h1>
+        <p class="lead mb-0">
+            This is the chance you will get into any form of crash given your location, weather and time
+        </p>
+    </div>
+</div>
 
 
 {% endblock %}
