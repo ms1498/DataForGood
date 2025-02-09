@@ -1,22 +1,20 @@
 import pandas as pd
 from mysoc_dataset import get_dataset_df
-import filterData as filt
+import TrafficAccidents.filterData as filt
 
 def get_weather_category(weather_description):
     categories = {
-        'CLEAR': ["clear sky"],
-        'RAIN': ["light rain", "moderate rain", "heavy intensity rain", "very heavy rain", 
-                 "extreme rain", "freezing rain"],
-        'SNOW': ["light snow", "snow", "heavy snow"],
-        'CLOUDY/OVERCAST': ["few clouds", "scattered clouds", "broken clouds", "overcast clouds"],
-        'UNKNOWN': [ "dust", "sand"],
-        'FOG/SMOKE/HAZE': ["mist", "smoke", "haze", "fog", "sand"],
-        'BLOWING SNOW': ["sleet"],
-        'FREEZING RAIN/DRIZZLE': ["freezing rain"],
-        'OTHER': ["volcanic ash", "squalls", "tornado"],
-        'SLEET/HAIL': ["sleet"],
-        'SEVERE CROSS WIND GATE': ["windy",  "thunderstorm", "light thunderstorm", "heavy thunderstorm", "ragged thunderstorm" ],
-        'BLOWING SAND, SOIL, DIRT': ["dust", "sand"]
+        'Fine + high winds': ["windy"],
+        'Fine no high winds': ["clear sky", "few clouds", "scattered clouds", "broken clouds", "overcast clouds", "haze", "fog"],
+        'Raining + high winds': [ "squalls", "tornado"],
+        'Raining no high winds': ["light rain", "moderate rain", "heavy rain", "light thunderstorm", "heavy thunderstorm", "ragged thunderstorm"],
+        'Snowing + high winds': ["heavy snow", "snow"],
+        'Snowing no high winds': ["light snow", "sleet", "freezing rain"],
+        'Fine': ["clear sky","few clouds", "scattered clouds", "broken cloud", "overcast clouds"],
+        'High winds':[ "windy", "squalls", "tornado"],
+        'Raining': ["light rain"," moderate rain"," heavy rain", "light thunderstorm", "heavy thunderstorm", "ragged thunderstorm"],
+        'Snowing': ["light snow", "snow", "heavy snow"]
+
     }
     
     # Iterate through the dictionary and find the category
