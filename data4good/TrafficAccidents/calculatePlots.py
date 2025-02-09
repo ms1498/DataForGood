@@ -8,7 +8,7 @@ import TrafficAccidents.filterData as fil
 import io
 import base64
 
-def myCoolFunc():
+def getPlots():
     sns.set_theme(style="whitegrid", palette="flare")
     matplotlib.use('Agg')  # Use a non-interactive backend
 
