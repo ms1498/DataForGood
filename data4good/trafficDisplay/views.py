@@ -3,6 +3,7 @@ from django.template import loader
 from TrafficAccidents.calculatePlots import getPlots
 import TrafficAccidents.filterData as filt
 from incidence.incidence import find_incidence, get_location
+from TrafficAccidents.impact_score_impl import fetch_data
 
 def index(request):
     context = getPlots()
@@ -21,14 +22,19 @@ def calculateRiskPage(request):
     cenlat, cenlon = get_location()
     likelihoodScore = find_incidence(cenlat, cenlon)
 
+
+    weather_condition = 'Snowing'
+    hour = 13
+    latitude = 51.340907
+
     # Get David's numbers
-    davidScores = getDavid()
+    davidScores = fetch_data(weather_condition, hour, latitude)
 
     # Calculate overall
-    overall = davidScores[0] *  davidScores[1] * davidScores[2] * likelihoodScore
+    # overall = davidScores[0] *  davidScores[1] * davidScores[2] * likelihoodScore
 
     context = {
-        "overallScore" : overall,
+        "overallScore" : 45,
         "slightScore" : davidScores[0],
         "seriousScore" : davidScores[1],
         "fatalScore" : davidScores[2],

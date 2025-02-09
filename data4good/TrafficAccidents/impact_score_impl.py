@@ -25,9 +25,9 @@ def find_incidence(cenlat):
 
 def fetch_data(weather_condition, hour, latitude):
     file_paths = {
-        'weather': 'data/normalised_proportions_weather_conditions.csv',
-        'location': 'data/normalised_proportions_of_accidents_by_constituency.csv',
-        'time': 'data/normalised_proportions_by_hour.csv'
+        'weather': 'TrafficAccidents/data/normalised_proportions_weather_conditions.csv',
+        'location': 'TrafficAccidents/data/normalised_proportions_of_accidents_by_constituency.csv',
+        'time': 'TrafficAccidents/data/normalised_proportions_by_hour.csv'
     }
 
     # Load weather data
@@ -54,9 +54,10 @@ def fetch_data(weather_condition, hour, latitude):
     combined_proportions = combined_data[combined_data != 0].prod()
 
     # Print individual and combined proportion values
-    print("\nIndividual Proportion Values:")
-    print(combined_data.to_string(index=False))
-    print("\nCombined Proportion Values, the:")
-    print(combined_proportions.to_string())
+    # print("\nIndividual Proportion Values:")
+    # print(combined_data.to_string(index=False))
+    # print("\nCombined Proportion Values, the:")
+    # print(combined_proportions.to_string())
+    return combined_proportions
 
 fetch_data(weather_condition, hour, latitude)
