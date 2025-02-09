@@ -148,6 +148,9 @@ img {
       <img src="data:image/png;base64,{{ plot_image }}" alt="{{ plot_name }}">
     </div>
   </div>
+  {% empty %}
+  <p style="text-align: center;">No data available for your location.</p>
+  {% endfor %}
 </div>
 
 {% endblock %}
